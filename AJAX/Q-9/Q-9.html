@@ -44,7 +44,7 @@
             border-radius: 5px;
         }
 
-  
+
 
         button {
             display: block;
@@ -76,7 +76,7 @@
     <script>
         $(document).ready(function () {
             let currentPage = 1;
-            const itemsPerPage = 6; 
+            const itemsPerPage = 6;
 
             function fetchImages(page) {
                 $.ajax({
@@ -107,7 +107,6 @@
                 fetchImages(currentPage);
             });
 
-     
             fetchImages(currentPage);
         });
 
