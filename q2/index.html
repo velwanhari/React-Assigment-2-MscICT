@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State and City Selector</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        label, select {
+            display: block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Select State and City</h1>
+    <label for="state">Select State:</label>
+    <select id="state">
+        <option value="">--Select State--</option>
+        <option value="gj">Gujarat</option>
+        <option value="mh">Maharastra</option>
+        <option value="up">Utter Pradesh</option>
+        <option value="rj">Rajesthan</option>
+    </select>
+
+    <label for="city">Select City:</label>
+    <select id="city" disabled>
+        <option value="">--Select City--</option>
+    </select>
+
+    <script>
+        $(document).ready(function() {
+            var citiesByState = {
+                'gj': ['Surat', 'Ahemdabad','Vadodra','Rajkot','GandhiNagar'],
+                'mh': ['Mumbai', 'Pune', 'Navi Mumbai','Thane'],
+                'up': ['Lucknow', 'Varanasi', 'Kanpur','Ayodhya'],
+                'rj': ['Jaipur', 'Jasi', 'Kota','Jodhpur']
+            };
+
+            $('#state').change(function() {
+                var state = $(this).val();
+                var citySelect = $('#city');
+
+                citySelect.empty();
+                citySelect.append('<option value="">--Select City--</option>');
+
+                if (state) {
+                    var cities = citiesByState[state];
+                    $.each(cities, function(index, city) {
+                        citySelect.append('<option value="' + city + '">' + city + '</option>');
+                    });
+                    citySelect.prop('disabled', false); 
+                } else {
+                    citySelect.prop('disabled', true); 
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

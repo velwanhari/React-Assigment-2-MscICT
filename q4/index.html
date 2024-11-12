@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Image Slider</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            text-align: center;
+        }
+        #slider {
+            position: relative;
+            max-width: 950px;
+            margin: auto;
+        }
+        .slides {
+            display: none; 
+        }
+        .active {
+            display: block; 
+        }
+        .button {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Image Slider</h1>
+    <div id="slider">
+        <img class="slides active" src="image_1.jpg" alt="Image 1">
+        <img class="slides" src="image_2.jpg" alt="Image 2">
+        <img class="slides" src="image_3.jpg" alt="Image 3">
+   
+    </div>
+    <button class="button" id="prevButton">Previous</button>
+    <button class="button" id="nextButton">Next</button>
+
+    <script>
+        $(document).ready(function() {
+            let currentIndex = 0;
+            const slides = $('.slides');
+            const totalSlides = slides.length;
+
+            function showSlide(index) {
+                slides.removeClass('active').hide(); 
+                slides.eq(index).addClass('active').show(); 
+            }
+
+            $('#nextButton').click(function() {
+                currentIndex = (currentIndex + 1) % totalSlides; 
+                showSlide(currentIndex);
+            });
+
+            $('#prevButton').click(function() {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; 
+                showSlide(currentIndex);
+            });
+
+            showSlide(currentIndex);
+        });
+    </script>
+
+</body>
+</html>

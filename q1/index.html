@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form with Validation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        label, input {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Contact Form</h1>
+    <form id="contactForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" >
+        <span class="error" id="nameError"></span>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" >
+        <span class="error" id="emailError"></span>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#contactForm').on('submit', function(event) {
+                event.preventDefault();
+
+            
+                $('#nameError').text('');
+                $('#emailError').text('');
+
+                var name = $('#name').val();
+                var email = $('#email').val();
+                var isValid = true;
+
+                if (!name) {
+                    $('#nameError').text('Name is required.');
+                    isValid = false;
+                }
+
+                if (!email) {
+                    $('#emailError').text('Email is required.');
+                    isValid = false;
+                } else {
+                    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailPattern.test(email)) {
+                        $('#emailError').text('Please enter a valid email address.');
+                        isValid = false;
+                    }
+                }
+
+                if (isValid) {
+                    alert('Name: ' + name + '\nEmail: ' + email);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

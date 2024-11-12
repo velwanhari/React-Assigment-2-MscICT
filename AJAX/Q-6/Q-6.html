@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books List</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .books {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .book {
+            width: 150px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            background: #fff;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .book:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .book img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .book h2 {
+            font-size: 1.2em;
+            margin: 5px 0;
+            color: #007BFF;
+        }
+
+        .book p {
+            font-size: 0.9em;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: white;
+            color: #007BFF;
+            border: 1px solid #007BFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 600px) {
+            .book {
+                width: 100%; 
+            }
+
+            .container {
+                padding: 20px; 
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Books</h1>
+        <div id="books" class="books"></div>
+        <button id="loadMore">Load More</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            let currentPage = 1;
+            const itemsPerPage = 8; 
+            const maxBooks = 100; 
+
+            function fetchBooks(page) {
+                $.ajax({
+                    url: `https://openlibrary.org/subjects/love.json?limit=${itemsPerPage}&offset=${(page - 1) * itemsPerPage}`,
+                    method: 'GET',
+                    success: function(data) {
+                        appendBooks(data.works);
+                    },
+                    error: function() {
+                        alert('Error fetching data');
+                    }
+                });
+            }
+
+            function appendBooks(books) {
+                books.forEach(book => {
+                    const coverUrl = book.cover_id ? `https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg` : 'https://via.placeholder.com/150';
+                    $('#books').append(`
+                        <div class="book">
+                            <img src="${coverUrl}" alt="${book.title}">
+                            <h2>${book.title}</h2>
+                            <p>Author: ${book.authors ? book.authors.map(a => a.name).join(', ') : 'Unknown'}</p>
+                            <p>Published: ${book.first_publish_year || 'N/A'}</p>
+                        </div>
+                    `);
+                });
+            }
+
+            $('#loadMore').on('click', function() {
+                if (currentPage * itemsPerPage < maxBooks) {
+                    currentPage++;
+                    fetchBooks(currentPage);
+                } else {
+                    alert('No more books to load');
+                }
+            });
+
+           
+            fetchBooks(currentPage);
+        });
+    </script>
+</body>
+</html>
